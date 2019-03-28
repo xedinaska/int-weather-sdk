@@ -1,0 +1,47 @@
+# General
+!.gitignore
+*.py[cod]
+*.sqlite*
+*.egg-info*
+.vagrant/*
+.env/*
+env/*
+dist/*
+var/*
+debug.log
+*/core/settings/*/local.py
+static/*
+tests.xml
+coverage.xml
+.coverage
+.ropeproject
+.env
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.cache
+.automated_scenarios.log
+htmlcov/*
+
+#Editors
+!.editorconfig
+.idea/*
+*.iml
+.vsc/
+
+#Go stuff
+*.so
+*.dylib
+*.test
+*.out
+.glide/
+vendor/
+
+#binary
+main

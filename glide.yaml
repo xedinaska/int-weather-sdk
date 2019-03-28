@@ -1,0 +1,6 @@
+package: github.com/xedinaska/int-weather-sdk
+import:
+- package: github.com/emicklei/go-restful
+  version: ^2.9.1
+- package: github.com/sirupsen/logrus
+  version: ^1.4.0
