@@ -6,7 +6,7 @@ import (
 	"github.com/xedinaska/int-weather-sdk/api"
 )
 
-// Integration is the common interface all DMS integrations must implement
+// Integration is the common interface all integrations must implement
 type Integration interface {
 	GetTodayWeather(ctx context.Context, req *api.TodayWeatherRequest) (*api.TodayWeatherResponse, error)
 	GetWeekWeather(ctx context.Context, req *api.WeekWeatherRequest) (*api.WeekWeatherResponse, error)
