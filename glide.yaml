@@ -4,3 +4,9 @@ import:
   version: ^2.9.1
 - package: github.com/sirupsen/logrus
   version: ^1.4.0
+- package: github.com/caarlos0/env
+  version: ^4.0.0
+- package: github.com/micro/go-web
+  version: ^1.0.0
+- package: gopkg.in/fatih/set.v0
+  version: ^0.2.1

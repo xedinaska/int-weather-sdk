@@ -30,18 +30,17 @@ func NewSunInfoHandler(serviceName string, logger *logrus.Entry, integration sdk
 func (h *SunInfoHandler) GetSunInfo(req *restful.Request, rsp *restful.Response) {
 
 	ctx := req.Attribute("ctx").(context.Context)
-	logger := logrus.Entry{}
 
 	body, err := ioutil.ReadAll(req.Request.Body)
 	if err != nil {
-		logger.Errorf("failed to unmarshal request body %v", err.Error())
+		h.logger.Errorf("failed to unmarshal request body %v", err.Error())
 		return
 	}
 	defer req.Request.Body.Close()
 
 	sunInfoRequest := &api.SunInfoRequest{}
 	if err := json.Unmarshal(body, sunInfoRequest); err != nil {
-		logger.WithField("request", fmt.Sprintf("%+v", req)).Errorf("[%s] invalid incoming SunInfo request", h.serviceName)
+		h.logger.WithField("request", fmt.Sprintf("%+v", req)).Errorf("[%s] invalid incoming SunInfo request", h.serviceName)
 		rsp.WriteHeaderAndEntity(422, &api.Error{
 			Status:  422,
 			Message: err.Error(),
@@ -51,7 +50,7 @@ func (h *SunInfoHandler) GetSunInfo(req *restful.Request, rsp *restful.Response)
 
 	response, err := h.integration.GetSunInfo(ctx, sunInfoRequest)
 	if err != nil {
-		logger.WithFields(logrus.Fields{
+		h.logger.WithFields(logrus.Fields{
 			"request":  fmt.Sprintf("%+v", sunInfoRequest),
 			"response": fmt.Sprintf("%+v", response),
 		}).Errorf("[%s] SunInfo error: %s", h.serviceName, err.Error())

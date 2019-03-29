@@ -2,6 +2,7 @@ package sdk
 
 import (
 	"context"
+
 	"github.com/xedinaska/int-weather-sdk/api"
 )
 

@@ -1,9 +1,8 @@
 #!make
 
-lint:
+fmt:
 	goimports -w $$(ls -d */ | grep -v vendor)
-	golint $$(ls -d */ | grep -v vendor)
-	gocyclo -over 10  $$(ls -d */ | grep -v vendor)
+	goimports -w integration.go
 
 test:
 	go test -v --cover --race -short `glide novendor | grep -v ./proto`

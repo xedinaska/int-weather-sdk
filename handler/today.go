@@ -30,18 +30,17 @@ func NewTodayWeatherHandler(serviceName string, logger *logrus.Entry, integratio
 func (h *TodayWeatherHandler) GetTodayWeather(req *restful.Request, rsp *restful.Response) {
 
 	ctx := req.Attribute("ctx").(context.Context)
-	logger := logrus.Entry{}
 
 	body, err := ioutil.ReadAll(req.Request.Body)
 	if err != nil {
-		logger.Errorf("failed to unmarshal request body %v", err.Error())
+		h.logger.Errorf("failed to unmarshal request body %v", err.Error())
 		return
 	}
 	defer req.Request.Body.Close()
 
 	todayRequest := &api.TodayWeatherRequest{}
 	if err := json.Unmarshal(body, todayRequest); err != nil {
-		logger.WithField("request", fmt.Sprintf("%+v", req)).Errorf("[%s] invalid incoming TodayWeather request", h.serviceName)
+		h.logger.WithField("request", fmt.Sprintf("%+v", req)).Errorf("[%s] invalid incoming TodayWeather request", h.serviceName)
 		rsp.WriteHeaderAndEntity(422, &api.Error{
 			Status:  422,
 			Message: err.Error(),
@@ -51,7 +50,7 @@ func (h *TodayWeatherHandler) GetTodayWeather(req *restful.Request, rsp *restful
 
 	response, err := h.integration.GetTodayWeather(ctx, todayRequest)
 	if err != nil {
-		logger.WithFields(logrus.Fields{
+		h.logger.WithFields(logrus.Fields{
 			"request":  fmt.Sprintf("%+v", todayRequest),
 			"response": fmt.Sprintf("%+v", response),
 		}).Errorf("[%s] TodayWeather error: %s", h.serviceName, err.Error())

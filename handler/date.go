@@ -30,18 +30,17 @@ func NewDateWeatherHandler(serviceName string, logger *logrus.Entry, integration
 func (h *DateWeatherHandler) GetWeatherForDate(req *restful.Request, rsp *restful.Response) {
 
 	ctx := req.Attribute("ctx").(context.Context)
-	logger := logrus.Entry{}
 
 	body, err := ioutil.ReadAll(req.Request.Body)
 	if err != nil {
-		logger.Errorf("failed to unmarshal request body %v", err.Error())
+		h.logger.Errorf("failed to unmarshal request body %v", err.Error())
 		return
 	}
 	defer req.Request.Body.Close()
 
 	dateRequest := &api.DateWeatherRequest{}
 	if err := json.Unmarshal(body, dateRequest); err != nil {
-		logger.WithField("request", fmt.Sprintf("%+v", req)).Errorf("[%s] invalid incoming DateWeather request", h.serviceName)
+		h.logger.WithField("request", fmt.Sprintf("%+v", req)).Errorf("[%s] invalid incoming DateWeather request", h.serviceName)
 		rsp.WriteHeaderAndEntity(422, &api.Error{
 			Status:  422,
 			Message: err.Error(),
@@ -51,7 +50,7 @@ func (h *DateWeatherHandler) GetWeatherForDate(req *restful.Request, rsp *restfu
 
 	response, err := h.integration.GetWeatherForDate(ctx, dateRequest)
 	if err != nil {
-		logger.WithFields(logrus.Fields{
+		h.logger.WithFields(logrus.Fields{
 			"request":  fmt.Sprintf("%+v", dateRequest),
 			"response": fmt.Sprintf("%+v", response),
 		}).Errorf("[%s] DateWeather error: %s", h.serviceName, err.Error())
