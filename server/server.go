@@ -11,6 +11,8 @@ import (
 	"github.com/xedinaska/int-weather-sdk/handler"
 )
 
+const port = 8091
+
 type Server struct {
 	WebRouter      *restful.Container
 	WebService     microweb.Service
@@ -31,6 +33,7 @@ func Create(serviceName, serviceVersion string, integration sdk.Integration, con
 	webService := microweb.NewService(
 		microweb.Name(serviceName),
 		microweb.Version(serviceVersion),
+		microweb.Address(fmt.Sprintf(":%d", port)),
 		microweb.Metadata(map[string]string{
 			"type": "integration",
 		}),
